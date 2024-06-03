@@ -16,12 +16,12 @@ export class MinApiService {
 
     constructor(private http: HttpClient) { }
 
-    private apiUrl: string = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD,PHP&api_key='
+    private apiUrl: string = 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=${cryptoCode}&tsyms=USD,PHP&api_key='
 
 
 
-    public getCryptoPrices(): Observable<CryptoData[]> {
-        return this.http.get<any>(this.apiUrl).pipe(
+    public getCryptoPrices(cryptoCode: string): Observable<CryptoData[]> {
+        return this.http.get<any>(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${cryptoCode}&tsyms=USD,PHP&api_key=`).pipe(
             map(data => {
               for(const key in data) {
                 const currency = data[key];
