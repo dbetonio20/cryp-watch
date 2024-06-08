@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CryptoData, MinApiService } from 'src/services/min-api.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { AddCryptoComponent } from '../add-crypto/add-crypto.component';
+import { AddCryptoComponent } from '../../add-crypto/add-crypto.component';
 import { addDoc, collection, collectionData, doc, docData, documentId, Firestore, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
 import { catchError, concatMap, finalize, from, map, Observable, Subscription, tap, zip } from 'rxjs'
 
