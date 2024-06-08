@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, ViewChild } from '@angular/core';
 import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { IonRefresher } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { MinApiService } from 'src/services/min-api.service';
+import { HomeComponent } from './components/home/home.component';
 
 @Component({
     selector: 'app-root',
@@ -9,14 +11,20 @@ import { MinApiService } from 'src/services/min-api.service';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    firestore: Firestore = inject(Firestore);
+    @ViewChild('home', { static: true }) home: HomeComponent;
+
     title = 'cryp-watch';
-    items$: Observable<any[]>;
+
+    public isLoading: boolean = false;
 
     constructor() {
-      const aCollection = collection(this.firestore, 'items')
-      this.items$ = collectionData(aCollection);
     }
 
+    public handleRefresh(event: any) {
+      setTimeout(() => {
+        this.home.getUpdatedCryptoData();
+        event.target.complete();
+      }, 2000);
+    }
 
 }

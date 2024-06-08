@@ -9,6 +9,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from 'src/environment/environment';
+import { IonicModule } from '@ionic/angular';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { environment } from 'src/environment/environment';
     HomeComponent,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
+    IonicModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

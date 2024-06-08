@@ -1,7 +1,12 @@
-<div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-  <div class="w-1/5"></div> <!-- Left column, 20% width -->
-  <div class="flex-1 mx-auto flex items-center justify-center"> <!-- Middle column, centered with flexbox -->
-    <home></home>
-  </div>
-  <div class="w-1/5"></div> <!-- Right column, 20% width -->
-</div>
+<ion-content class="ion-padding">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div class="w-1/5"></div> <!-- Left column, 20% width -->
+        <div class="flex-1 mx-auto flex items-center justify-center"> <!-- Middle column, centered with flexbox -->
+            <home #home></home>
+        </div>
+        <div class="w-1/5"></div> <!-- Right column, 20% width -->
+    </div>
+</ion-content>
