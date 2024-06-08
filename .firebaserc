@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "cryp-watch": {
+      "hosting": {
+        "cryp-watch": [
+          "cryp-watch"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "cryp-watch"
+  }
+}

@@ -32,6 +32,10 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }],
               "budgets": [
                 {
                   "type": "initial",
@@ -92,6 +96,13 @@
               "src/styles.css"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2,
+            "browserTarget": "cryp-watch:build:production"
           }
         }
       }

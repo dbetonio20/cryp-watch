@@ -20,21 +20,28 @@ export class MinApiService {
 
 
 
-    public getCryptoPrices(cryptoCode: string): Observable<CryptoData[]> {
-        return this.http.get<any>(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${cryptoCode}&tsyms=USD,PHP&api_key=`).pipe(
-            map(data => {
-              for(const key in data) {
-                const currency = data[key];
-                this.cryptoData.push({name: key, usd: currency.USD, php: currency.PHP});
-              }
-              return this.cryptoData;
-            }), // You can transform the data here if needed
-            catchError(error => {
-                console.error('There was an error!', error);
-                return throwError(error);
-            })
-        );
-    }
+    public getCryptoPrices(cryptoCode: string[]): Observable<CryptoData[]> {
+      let cryptoCodeString;
+      if(cryptoCode.length != 1) {
+        cryptoCodeString = cryptoCode.join(','); // Join array elements into a comma-separated string
+      } else {
+        cryptoCodeString = cryptoCode[0];
+      }
 
+      return this.http.get<any>(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${cryptoCodeString}&tsyms=USD,PHP&api_key=`).pipe(
+        map(data => {
+          const cryptoData: CryptoData[] = [];
+          for (const key in data) {
+            const currency = data[key];
+            cryptoData.push({ name: key, usd: currency.USD, php: currency.PHP });
+          }
+          return cryptoData;
+        }),
+        catchError(error => {
+          console.error('There was an error!', error);
+          return throwError(error);
+        })
+      );
+    }
 
 }

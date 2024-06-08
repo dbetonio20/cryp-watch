@@ -3,7 +3,9 @@
   <button (click)="openDialog()" type="button" class=" text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
     Add Investment
   </button>
-
+  <button (click)="getUpdatedCryptoData()" type="button" class=" text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+    Update
+  </button>
 </div>
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg" >
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -24,9 +26,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let coin of myData" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr *ngFor="let coin of investmentData" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{coin.name}}
+                    {{coin.coin}}
                 </th>
                 <td class="px-6 py-4">{{ coin.usd | number:'1.2-2'}}</td>
                 <td class="px-6 py-4">{{ coin.php | number:'1.2-2'}}</td>

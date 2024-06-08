@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { MinApiService } from 'src/services/min-api.service';
 
 @Component({
@@ -7,9 +9,13 @@ import { MinApiService } from 'src/services/min-api.service';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+    firestore: Firestore = inject(Firestore);
     title = 'cryp-watch';
+    items$: Observable<any[]>;
 
     constructor() {
+      const aCollection = collection(this.firestore, 'items')
+      this.items$ = collectionData(aCollection);
     }
 
 
