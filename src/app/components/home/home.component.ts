@@ -35,6 +35,7 @@ export class HomeComponent implements OnInit {
     public cryptoData: CryptoData[] = [];
     public investmentData: InvestmentData[] = [];
     private subscription: Subscription;
+    public isLoading: boolean = false;
 
     constructor(public minAPIService: MinApiService,
         public dialog: MatDialog
@@ -47,11 +48,12 @@ export class HomeComponent implements OnInit {
     }
 
     private initializeCollection() {
+        this.isLoading = true;
         this.aCollection = collection(this.firestore, 'investment');
-        this.items$ = collectionData(this.aCollection).pipe(
+        collectionData(this.aCollection).pipe(
             tap(data => console.log('Firestore data:', data)),
             map(data => {
-                const mappedData = data.map((element: any) => {
+                return data.map((element: any) => {
                     const investmentTotal = element.investment;
                     const gainOrLost = this.calculatePercentageChange(element.usd, element.boughtPriceInUSD);
                     const currentGainOrLost = this.calculateInvestment(element.boughtPriceInUSD, element.usd, investmentTotal);
@@ -68,15 +70,15 @@ export class HomeComponent implements OnInit {
                         overallGainOrLost: currentGainOrLost
                     };
                 });
-
+            }),
+            tap(mappedData => {
                 this.investmentData = mappedData;
+                this.isLoading = false;
                 console.log('Mapped data:', this.investmentData);
+            }),
+        ).subscribe();
 
-                return mappedData;
-            })
-        );
-
-        this.subscription = this.items$.subscribe();
+        // this.subscription = this.items$.subscribe();
     }
 
 
@@ -160,7 +162,7 @@ export class HomeComponent implements OnInit {
 
     public currentPrice: any;
     public getUpdatedCryptoData() {
-        console.log('data 1')
+        this.isLoading = true;
         let coins = this.investmentData.map(data => data.coin);
         this.minAPIService.getCryptoPrices(coins).pipe(
             finalize(() => {
@@ -199,7 +201,9 @@ export class HomeComponent implements OnInit {
         });
 
         // Use zip to execute all observables concurrently
-        zip(...observables).subscribe(
+        zip(...observables).pipe(
+          finalize(() => this.isLoading = false)
+        ).subscribe(
             (ids) => {
                 ids.forEach(id => console.log('USD and PHP prices successfully updated for document:', id));
             }
