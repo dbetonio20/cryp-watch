@@ -1,10 +1,10 @@
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CryptoData, MinApiService } from 'src/services/min-api.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { AddCryptoComponent } from '../../add-crypto/add-crypto.component';
-import { addDoc, collection, collectionData, doc, docData, documentId, Firestore, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, CollectionReference, doc, docData, documentId, Firestore, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
 import { catchError, concatMap, finalize, from, map, Observable, Subscription, tap, zip } from 'rxjs'
 
 interface InvestmentData {
@@ -30,12 +30,16 @@ interface InvestmentData {
 export class HomeComponent implements OnInit {
     firestore: Firestore = inject(Firestore);
     items$: Observable<any[]>;
-    public aCollection: any;
 
-    public cryptoData: CryptoData[] = [];
-    public investmentData: InvestmentData[] = [];
+
+    public aCollection: CollectionReference;
+    public investmentData: WritableSignal<InvestmentData[]> = signal([]);
+    public isLoading: WritableSignal<boolean> = signal(false);
+
+
+    private cryptoData: WritableSignal<CryptoData[]> = signal([]);
     private subscription: Subscription;
-    public isLoading: boolean = false;
+
 
     constructor(public minAPIService: MinApiService,
         public dialog: MatDialog
@@ -48,7 +52,7 @@ export class HomeComponent implements OnInit {
     }
 
     private initializeCollection() {
-        this.isLoading = true;
+        this.isLoading.set(true);
         this.aCollection = collection(this.firestore, 'investment');
         collectionData(this.aCollection).pipe(
             tap(data => console.log('Firestore data:', data)),
@@ -72,13 +76,11 @@ export class HomeComponent implements OnInit {
                 });
             }),
             tap(mappedData => {
-                this.investmentData = mappedData;
-                this.isLoading = false;
+                this.investmentData.set(mappedData);
+                this.isLoading.set(false);
                 console.log('Mapped data:', this.investmentData);
             }),
         ).subscribe();
-
-        // this.subscription = this.items$.subscribe();
     }
 
 
@@ -115,14 +117,14 @@ export class HomeComponent implements OnInit {
                     return;
                 }
 
-                this.cryptoData = data;
-                this.cryptoData.forEach(element => {
+                this.cryptoData.set(data);
+                this.cryptoData().forEach(element => {
                     this.saveToFirestore(element, crypto);
                     const boughtPrice = crypto.boughtPrice;
                     const investmentTotal = crypto.investment;
                     const gainOrLost = this.calculatePercentageChange(element.usd, boughtPrice);
                     const currentGainOrLost = this.calculateInvestment(boughtPrice, element.usd, investmentTotal);
-                    this.investmentData.push({
+                    this.investmentData().push({
                         coin: element.name,
                         usd: element.usd,
                         php: element.php,
@@ -162,8 +164,8 @@ export class HomeComponent implements OnInit {
 
     public currentPrice: any;
     public getUpdatedCryptoData() {
-        this.isLoading = true;
-        let coins = this.investmentData.map(data => data.coin);
+        this.isLoading.set(true);
+        let coins = this.investmentData().map(data => data.coin);
         this.minAPIService.getCryptoPrices(coins).pipe(
             finalize(() => {
                 const coinsToUpdate = coins.filter((element, index) => coins.indexOf(element) === index);
@@ -202,7 +204,7 @@ export class HomeComponent implements OnInit {
 
         // Use zip to execute all observables concurrently
         zip(...observables).pipe(
-          finalize(() => this.isLoading = false)
+          finalize(() => this.isLoading.set(false))
         ).subscribe(
             (ids) => {
                 ids.forEach(id => console.log('USD and PHP prices successfully updated for document:', id));
