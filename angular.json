@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "cryp-watch:build:production"
+              "buildTarget": "cryp-watch:build:production"
             },
             "development": {
-              "browserTarget": "cryp-watch:build:development"
+              "buildTarget": "cryp-watch:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cryp-watch:build"
+            "buildTarget": "cryp-watch:build"
           }
         },
         "test": {
