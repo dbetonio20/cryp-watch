@@ -1,9 +1,9 @@
 {
-  "hosting": [
-    {
-      "target": "cryp-watch",
-      "source": ".",
-      "frameworksBackend": {}
-    }
-  ]
+    "hosting": [
+        {
+            "target": "cryp-watch",
+            "source": ".",
+            "frameworksBackend": {}
+        }
+    ]
 }

@@ -1,14 +1,12 @@
-import { Component, inject, Input, ViewChild } from '@angular/core';
-import { collection, collectionData, Firestore } from '@angular/fire/firestore';
-import { IonRefresher, Platform } from '@ionic/angular';
-import { Observable } from 'rxjs';
-import { MinApiService } from 'src/services/min-api.service';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Component, ViewChild } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { HomeComponent } from './components/home/components/home.component';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
     @ViewChild('home', { static: true }) home: HomeComponent;
@@ -18,17 +16,16 @@ export class AppComponent {
     public isLoading: boolean = false;
 
     constructor(public platform: Platform) {
-      console.log(platform.platforms());
-      if(platform.platforms().includes('desktop')) {
-        this.isDesktop = true;
-      }
+        console.log(platform.platforms());
+        if (platform.platforms().includes('desktop')) {
+            this.isDesktop = true;
+        }
     }
 
     public handleRefresh(event: any) {
-      setTimeout(() => {
-        this.home.getUpdatedCryptoData();
-        event.target.complete();
-      }, 2000);
+        setTimeout(() => {
+            this.home.getUpdatedCryptoData();
+            event.target.complete();
+        }, 2000);
     }
-
 }
