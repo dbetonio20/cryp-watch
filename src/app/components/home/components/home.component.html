@@ -7,50 +7,65 @@
     </button>
 </div>
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">Coin Name</th>
-                <th scope="col" class="px-6 py-3">USD</th>
-                <th scope="col" class="px-6 py-3">PHP</th>
-                <th scope="col" class="px-6 py-3">Investment</th>
-                <th scope="col" class="px-6 py-3">Bought Price $</th>
-                <th scope="col" class="px-6 py-3">Bought Price ₱</th>
-                <th scope="col" class="px-6 py-3">Profit/Loss %</th>
-                <th scope="col" class="px-6 py-3">Profit/Loss</th>
-                <th scope="col" class="px-6 py-3">Overall Profit/Loss</th>
-            </tr>
-        </thead>
-        <tbody>
-            <ng-container *ngIf="!isLoading(); else loadingSkeleton">
-                <tr *ngFor="let coin of investmentData()" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {{coin.coin}}
-                    </th>
-                    <td class="px-6 py-4">{{ coin.usd | number:'1.2-2'}}</td>
-                    <td class="px-6 py-4">{{ coin.php | number:'1.2-2'}}</td>
-                    <td class="px-6 py-4">{{ coin.investment | number:'1.2-2'}}</td>
-                    <td class="px-6 py-4">{{ coin.boughtPriceInUSD | number:'1.2-2' }}</td>
-                    <td class="px-6 py-4">{{ coin.boughtPriceInPHP | number:'1.2-2' }}</td>
-                    <td class="px-6 py-4" [ngClass]="{
-                      'text-green-500': coin.gainOrLostPercentage > 0,
-                      'text-red-500': coin.gainOrLostPercentage < 0
-                  }">{{ coin.gainOrLostPercentage.toFixed(2) }}%</td>
-                    <td class="px-6 py-4" [ngClass]="{
-                      'text-green-500': coin.gain > 0,
-                      'text-red-500': coin.gain < 0
-                  }">{{ coin.gain.toFixed(2) | number:'1.2-2' }}</td>
-                    <td class="px-6 py-4">{{ coin.overallGainOrLost.toFixed(2) | number:'1.2-2' }}</td>
-                </tr>
-            </ng-container>
-            <ng-template #loadingSkeleton>
-                <tr *ngFor="let _ of [1, 2, 3]"
-                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 animate-pulse">
-                    <td colspan="9" class="px-6 py-4">
-                        <div class="h-4 bg-gray-200 rounded dark:bg-gray-600"></div>
-                    </td>
-                </tr>
-            </ng-template>
-        </tbody>
-    </table>
+  <table class="min-w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-hidden">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="leftPad py-3">Coin Name</th>
+          <th scope="col" class="leftPad py-3">USD</th>
+          <th scope="col" class="leftPad py-3">PHP</th>
+          <th scope="col" class="leftPad py-3">Investment</th>
+          <th scope="col" class="leftPad py-3">Bought Price $</th>
+          <th scope="col" class="leftPad py-3">Bought Price ₱</th>
+          <th scope="col" class="leftPad py-3">Profit/Loss %</th>
+          <th scope="col" class="leftPad py-3">Profit/Loss</th>
+          <th scope="col" class="leftPad py-3">Overall Profit/Loss</th>
+      </tr>
+      </thead>
+      <tbody>
+          <ng-container *ngIf="!isLoading(); else loadingSkeleton">
+              <tr *ngFor="let coin of investmentData()" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <td colspan="9" class="px-0 py-0">
+                      <div class="relative group">
+                          <div class="absolute inset-y-0 right-0 w-12 flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:pointer-events-auto pointer-events-none">
+                              <button (click)="deleteCoin(coin)" style="font-weight: bolder" class="focus:outline-none">
+                                  X
+                              </button>
+                          </div>
+                          <div class=" transition-transform duration-300 group-hover:-translate-x-10">
+                              <table class="min-w-full">
+                                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                      <th scope="row" class="leftPad py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                          {{coin.coin}}
+                                      </th>
+                                      <td class="leftPad py-4">{{ coin.usd | number:'1.2-2'}}</td>
+                                      <td class="leftPad py-4">{{ coin.php | number:'1.2-2'}}</td>
+                                      <td class="leftPad py-4">{{ coin.investment | number:'1.2-2'}}</td>
+                                      <td class="leftPad py-4">{{ coin.boughtPriceInUSD | number:'1.2-2' }}</td>
+                                      <td class="leftPad py-4">{{ coin.boughtPriceInPHP | number:'1.2-2' }}</td>
+                                      <td class="leftPad py-4" [ngClass]="{
+                                        'text-green-500': coin.gainOrLostPercentage > 0,
+                                        'text-red-500': coin.gainOrLostPercentage < 0
+                                    }">{{ coin.gainOrLostPercentage.toFixed(2) }}%</td>
+                                      <td class="leftPad py-4" [ngClass]="{
+                                        'text-green-500': coin.gain > 0,
+                                        'text-red-500': coin.gain < 0
+                                    }">{{ coin.gain.toFixed(2) | number:'1.2-2' }}</td>
+                                      <td class="leftPad py-4">{{ coin.overallGainOrLost.toFixed(2) | number:'1.2-2' }}</td>
+                                  </tr>
+                              </table>
+                          </div>
+                      </div>
+                  </td>
+              </tr>
+          </ng-container>
+          <ng-template #loadingSkeleton>
+            <tr *ngFor="let _ of [1, 2, 3]"
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 animate-pulse">
+            <td colspan="9" class="leftPad py-4">
+                <div class="h-4 bg-gray-200 rounded dark:bg-gray-600"></div>
+            </td>
+        </tr>
+          </ng-template>
+      </tbody>
+  </table>
 </div>

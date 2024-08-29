@@ -4,7 +4,7 @@ import { CryptoData, MinApiService } from 'src/services/min-api.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { AddCryptoComponent } from '../../add-crypto/add-crypto.component';
-import { addDoc, collection, collectionData, CollectionReference, doc, docData, documentId, Firestore, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, CollectionReference, deleteDoc, doc, docData, documentId, Firestore, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
 import { catchError, concatMap, finalize, from, map, Observable, Subscription, tap, zip } from 'rxjs'
 
 interface InvestmentData {
@@ -52,36 +52,38 @@ export class HomeComponent implements OnInit {
     }
 
     private initializeCollection() {
-        this.isLoading.set(true);
-        this.aCollection = collection(this.firestore, 'investment');
-        collectionData(this.aCollection).pipe(
-            tap(data => console.log('Firestore data:', data)),
-            map(data => {
-                return data.map((element: any) => {
-                    const investmentTotal = element.investment;
-                    const gainOrLost = this.calculatePercentageChange(element.usd, element.boughtPriceInUSD);
-                    const currentGainOrLost = this.calculateInvestment(element.boughtPriceInUSD, element.usd, investmentTotal);
+      this.isLoading.set(true);
+      this.aCollection = collection(this.firestore, 'investment');
+      collectionData(this.aCollection, { idField: 'id' }).pipe( // Add idField option here
+          tap(data => console.log('Firestore data:', data)),
+          map(data => {
+              return data.map((element: any) => {
+                  const investmentTotal = element.investment;
+                  const gainOrLost = this.calculatePercentageChange(element.usd, element.boughtPriceInUSD);
+                  const currentGainOrLost = this.calculateInvestment(element.boughtPriceInUSD, element.usd, investmentTotal);
 
-                    return {
-                        coin: element.coin,
-                        usd: element.usd,
-                        php: element.php,
-                        investment: investmentTotal,
-                        boughtPriceInUSD: element.boughtPriceInUSD,
-                        boughtPriceInPHP: element.boughtPriceInPHP,
-                        gainOrLostPercentage: gainOrLost,
-                        gain: currentGainOrLost - investmentTotal,
-                        overallGainOrLost: currentGainOrLost
-                    };
-                });
-            }),
-            tap(mappedData => {
-                this.investmentData.set(mappedData);
-                this.isLoading.set(false);
-                console.log('Mapped data:', this.investmentData);
-            }),
-        ).subscribe();
-    }
+                  return {
+                      id: element.id, // Include the document ID
+                      coin: element.coin,
+                      usd: element.usd,
+                      php: element.php,
+                      investment: investmentTotal,
+                      boughtPriceInUSD: element.boughtPriceInUSD,
+                      boughtPriceInPHP: element.boughtPriceInPHP,
+                      gainOrLostPercentage: gainOrLost,
+                      gain: currentGainOrLost - investmentTotal,
+                      overallGainOrLost: currentGainOrLost
+                  };
+              });
+          }),
+          tap(mappedData => {
+              this.investmentData.set(mappedData);
+              this.isLoading.set(false);
+              console.log('Mapped data:', this.investmentData);
+          }),
+      ).subscribe();
+  }
+
 
 
     public calculatePercentageChange(currentPrice: number, boughtPrice: number): number {
@@ -210,6 +212,19 @@ export class HomeComponent implements OnInit {
                 ids.forEach(id => console.log('USD and PHP prices successfully updated for document:', id));
             }
         );
+    }
+
+    public deleteCoin (data: any) {
+      this.deleteDocument('investment',data.id)
+    }
+
+    public deleteDocument(collectionName: string, docId: string) {
+      const docRef = doc(this.firestore, `${collectionName}/${docId}`);
+      deleteDoc(docRef).then(() => {
+        console.log('Document successfully deleted!');
+      }).catch((error) => {
+        console.error('Error removing document: ', error);
+      });
     }
 
     ngOnDestroy() {

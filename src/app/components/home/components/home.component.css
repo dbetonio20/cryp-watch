@@ -1,3 +1,8 @@
 .custom-dialog-panel {
   --mdc-dialog-container-color: red;
 }
+
+
+.leftPad {
+  padding-left: 1.5rem;
+}
