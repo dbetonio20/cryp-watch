@@ -11,11 +11,12 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from 'src/environment/environment';
 import { IonicModule } from '@ionic/angular';
 
-@NgModule({ declarations: [
-        AppComponent
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+@NgModule({
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
         AppRoutingModule,
+        HttpClientModule,
         HomeComponent,
         provideFirebaseApp(() => initializeApp(environment.firebase)),
         provideAuth(() => getAuth()),
@@ -23,12 +24,19 @@ import { IonicModule } from '@ionic/angular';
         IonicModule.forRoot({
             platform: {
                 /** The default `desktop` function returns false for devices with a touchscreen.
-                * This is not always wanted, so this function tests the User Agent instead.
-                **/
-                'desktop': (win) => {
-                    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(win.navigator.userAgent);
+                 * This is not always wanted, so this function tests the User Agent instead.
+                 **/
+                desktop: win => {
+                    const isMobile =
+                        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                            win.navigator.userAgent
+                        );
                     return !isMobile;
-                }
+                },
             },
-        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
-export class AppModule { }
+        }),
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
+})
+export class AppModule {}
