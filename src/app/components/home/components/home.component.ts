@@ -43,7 +43,6 @@ interface InvestmentData {
     php: number;
     investment: number;
     boughtPriceInUSD: number;
-    boughtPriceInPHP: number;
     gainOrLostPercentage: number;
     gain: number;
     overallGainOrLost: number;
@@ -106,7 +105,6 @@ export class HomeComponent implements OnInit, OnDestroy {
                             php: element.php,
                             investment: investmentTotal,
                             boughtPriceInUSD: element.boughtPriceInUSD,
-                            boughtPriceInPHP: element.boughtPriceInPHP,
                             gainOrLostPercentage: gainOrLost,
                             gain: currentGainOrLost - investmentTotal,
                             overallGainOrLost: currentGainOrLost,
@@ -186,7 +184,6 @@ export class HomeComponent implements OnInit, OnDestroy {
                         php: element.php,
                         investment: investmentTotal,
                         boughtPriceInUSD: boughtPrice,
-                        boughtPriceInPHP: boughtPrice,
                         gainOrLostPercentage: gainOrLost,
                         gain: currentGainOrLost - investmentTotal,
                         overallGainOrLost: currentGainOrLost,
@@ -217,7 +214,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             php: element.php,
             investment: investmentTotal,
             boughtPriceInUSD: boughtPrice,
-            boughtPriceInPHP: boughtPrice,
             gainOrLostPercentage: gainOrLost,
             gain: currentGainOrLost - investmentTotal,
             overallGainOrLost: currentGainOrLost,

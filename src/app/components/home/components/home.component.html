@@ -18,14 +18,13 @@
         <thead
             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <th scope="col" class="leftPad py-3">Coin Name</th>
-                <th scope="col" class="leftPad py-3">USD</th>
-                <th scope="col" class="leftPad py-3">Investment</th>
-                <th scope="col" class="leftPad py-3">Bought Price $</th>
-                <th scope="col" class="leftPad py-3">Bought Price ₱</th>
-                <th scope="col" class="leftPad py-3">Profit/Loss %</th>
-                <th scope="col" class="leftPad py-3">Profit/Loss</th>
-                <th scope="col" class="leftPad py-3">Overall Profit/Loss</th>
+                <th scope="col" class="px-4 py-3">Coin Name</th>
+                <th scope="col" class="px-4 py-3">USD</th>
+                <th scope="col" class="px-4 py-3">Investment</th>
+                <th scope="col" class="px-4 py-3">Bought Price $</th>
+                <th scope="col" class="px-4 py-3">Profit/Loss %</th>
+                <th scope="col" class="px-4 py-3">Profit/Loss</th>
+                <th scope="col" class="px-4 py-3">Overall</th>
             </tr>
         </thead>
         <tbody>
@@ -69,12 +68,6 @@
                                         <td class="leftPad py-4">
                                             {{
                                                 coin.boughtPriceInUSD
-                                                    | number: '1.2-2'
-                                            }}
-                                        </td>
-                                        <td class="leftPad py-4">
-                                            {{
-                                                coin.boughtPriceInPHP
                                                     | number: '1.2-2'
                                             }}
                                         </td>
