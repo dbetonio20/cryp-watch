@@ -8,10 +8,10 @@ import {
     WritableSignal,
     OnDestroy,
 } from '@angular/core';
-import { CryptoData, MinApiService } from 'src/services/min-api.service';
+import { CryptoData, MinApiService } from 'src/app/core/min-api.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { AddCryptoComponent } from '../../add-crypto/add-crypto.component';
+import { AddCryptoComponent } from '../add-crypto/add-crypto.component';
 import {
     addDoc,
     collection,

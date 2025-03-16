@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ViewChild } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { HomeComponent } from './components/home/components/home.component';
+import { HomeComponent } from './features/home/home.component';
 
 @Component({
     selector: 'app-root',
