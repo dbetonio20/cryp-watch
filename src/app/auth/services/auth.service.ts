@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { computed, inject, Injectable, Signal, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
     Auth,
     createUserWithEmailAndPassword,
@@ -8,60 +8,52 @@ import {
     signOut,
     updateProfile,
     User,
-    user,
     UserCredential,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { catchError, from, map, Observable, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, from, switchMap, map, catchError, throwError } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    firebaseAuth = inject(Auth);
-    router = inject(Router);
-    user$ = signal<User | null | undefined>(undefined);
-    isLoggedIn = computed(() => this.user$() !== null);
+    private firebaseAuth = inject(Auth);
+    private router = inject(Router);
 
-    private isAuthenticated = signal<boolean>(false);
+    private userSubject = new BehaviorSubject<User | null | undefined>(undefined);
+    user$ = this.userSubject.asObservable();
 
     constructor() {
         onAuthStateChanged(this.firebaseAuth, user => {
-            this.user$.set(user);
-            console.log(this.user$());
+            this.userSubject.next(user);
+            console.log('Auth State Changed:', user);
         });
     }
 
-    register(
-        _email: string,
-        _username: string,
-        _password: string
-    ): Observable<UserCredential> {
-        return from(
-            createUserWithEmailAndPassword(this.firebaseAuth, _email, _password)
-        ).pipe(
+    get isAuthenticated(): boolean {
+        return !!this.userSubject.value;
+    }
+
+    register(_email: string, _username: string, _password: string): Observable<UserCredential> {
+        return from(createUserWithEmailAndPassword(this.firebaseAuth, _email, _password)).pipe(
             switchMap(response =>
-                from(
-                    updateProfile(response.user, { displayName: _username })
-                ).pipe(
-                    map(() => response) // Ensure the final observable emits the user credential after profile update
+                from(updateProfile(response.user, { displayName: _username })).pipe(
+                    map(() => response)
                 )
             ),
-            catchError(error => throwError(() => error)) // Handle errors properly
+            catchError(error => throwError(() => error))
         );
     }
 
     login(_email: string, _password: string): Observable<UserCredential> {
-        return from(
-            signInWithEmailAndPassword(this.firebaseAuth, _email, _password)
-        ).pipe(
-            catchError(error => throwError(() => error)) // Proper error handling
+        return from(signInWithEmailAndPassword(this.firebaseAuth, _email, _password)).pipe(
+            catchError(error => throwError(() => error))
         );
     }
 
     logout(): Promise<void> {
         return signOut(this.firebaseAuth).then(() => {
-            this.user$.set(null); // Explicitly set user to null on logout
+            this.userSubject.next(null);
             this.router.navigate(['/login']);
         });
     }

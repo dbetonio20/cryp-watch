@@ -24,7 +24,7 @@ export class AppComponent {
 
     public handleRefresh(event: any) {
         setTimeout(() => {
-            this.home.getUpdatedCryptoData();
+            // this.home.getUpdatedCryptoData();
             event.target.complete();
         }, 2000);
     }
