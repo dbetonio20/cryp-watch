@@ -16,8 +16,7 @@ import { Router } from '@angular/router';
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css'],
-    imports: [FormsModule, ReactiveFormsModule],
-    standalone: true,
+    imports: [FormsModule, ReactiveFormsModule]
 })
 export class LoginComponent implements OnInit {
     authService = inject(AuthService);

@@ -10,8 +10,7 @@ import { AuthService } from '../services/auth.service';
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.css'],
-    imports: [FormsModule, ReactiveFormsModule ],
-    standalone: true,
+    imports: [FormsModule, ReactiveFormsModule]
 })
 export class RegisterComponent implements OnInit {
     authService = inject(AuthService);

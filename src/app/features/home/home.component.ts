@@ -58,8 +58,7 @@ interface InvestmentData {
     selector: 'home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css'],
-    standalone: true,
-    imports: [NgFor, NgIf, CommonModule, MatButtonModule, MatDialogModule],
+    imports: [NgFor, NgIf, CommonModule, MatButtonModule, MatDialogModule]
 })
 export class HomeComponent implements OnInit, OnDestroy {
     firestore: Firestore = inject(Firestore);

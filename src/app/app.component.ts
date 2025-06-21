@@ -7,6 +7,7 @@ import { HomeComponent } from './features/home/home.component';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
+    standalone: false
 })
 export class AppComponent {
     @ViewChild('home', { static: true }) home: HomeComponent;

@@ -13,8 +13,7 @@ import { MatDialogRef } from '@angular/material/dialog';
     selector: 'app-add-crypto',
     templateUrl: './add-crypto.component.html',
     styleUrls: ['./add-crypto.component.css'],
-    standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, NgIf],
+    imports: [FormsModule, ReactiveFormsModule, NgIf]
 })
 export class AddCryptoComponent {
     form: FormGroup;
