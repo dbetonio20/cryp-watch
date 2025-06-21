@@ -18,9 +18,6 @@ import { IonicModule } from '@ionic/angular';
         AppRoutingModule,
         HttpClientModule,
         HomeComponent,
-        provideFirebaseApp(() => initializeApp(environment.firebase)),
-        provideAuth(() => getAuth()),
-        provideFirestore(() => getFirestore()),
         IonicModule.forRoot({
             platform: {
                 /** The default `desktop` function returns false for devices with a touchscreen.
@@ -36,7 +33,11 @@ import { IonicModule } from '@ionic/angular';
             },
         }),
     ],
-    providers: [],
+    providers: [
+        provideFirebaseApp(() => initializeApp(environment.firebase)),
+        provideAuth(() => getAuth()),
+        provideFirestore(() => getFirestore()),
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
