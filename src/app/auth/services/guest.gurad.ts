@@ -1,19 +1,19 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { map, filter } from 'rxjs';
+import { filter, map } from 'rxjs';
 
-export const authGuard: CanActivateFn = () => {
+export const guestGuard: CanActivateFn = () => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
     return authService.user$.pipe(
-        filter(user => user !== undefined), // Wait until user is determined
+        filter(user => user !== undefined), // Ensure the auth state is loaded
         map(user => {
-            if (user) {
+            if (!user) {
                 return true;
             } else {
-                router.navigate(['/landing-page']);
+                router.navigate(['/cryp-watch']);
                 return false;
             }
         })
