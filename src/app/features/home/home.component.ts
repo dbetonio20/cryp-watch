@@ -7,11 +7,11 @@ import {
     signal,
     WritableSignal,
     OnDestroy,
+    Inject,
 } from '@angular/core';
 import { CryptoData, MinApiService } from 'src/app/core/min-api.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { AddCryptoComponent } from '../add-crypto/add-crypto.component';
 import {
     addDoc,
     collection,
@@ -41,6 +41,7 @@ import {
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '@angular/fire/auth';
+import { AddCryptoComponent } from '../add-crypto/add-crypto.component';
 
 interface InvestmentData {
     coin: string;
@@ -56,9 +57,10 @@ interface InvestmentData {
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'home',
+    standalone: true,
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css'],
-    imports: [NgFor, NgIf, CommonModule, MatButtonModule, MatDialogModule]
+    imports: [CommonModule, NgFor, NgIf, MatButtonModule, MatDialogModule, AddCryptoComponent]
 })
 export class HomeComponent implements OnInit, OnDestroy {
     firestore: Firestore = inject(Firestore);
@@ -76,7 +78,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     constructor(
         public minAPIService: MinApiService,
-        public dialog: MatDialog
+        @Inject(MatDialog) public dialog: MatDialog
     ) {
         this.investmentCollectionRef = collection(this.firestore, 'investment');
     }
