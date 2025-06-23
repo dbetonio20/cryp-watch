@@ -7,11 +7,11 @@ import {
     signal,
     WritableSignal,
     OnDestroy,
+    Inject,
 } from '@angular/core';
-import { CryptoData, MinApiService } from 'src/services/min-api.service';
+import { CryptoData, MinApiService } from 'src/app/core/min-api.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { AddCryptoComponent } from '../../add-crypto/add-crypto.component';
 import {
     addDoc,
     collection,
@@ -29,13 +29,19 @@ import {
     catchError,
     concatMap,
     finalize,
+    forkJoin,
     from,
     map,
     Observable,
+    of,
     Subscription,
     tap,
     zip,
 } from 'rxjs';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { Router } from '@angular/router';
+import { User } from '@angular/fire/auth';
+import { AddCryptoComponent } from '../add-crypto/add-crypto.component';
 
 interface InvestmentData {
     coin: string;
@@ -43,7 +49,6 @@ interface InvestmentData {
     php: number;
     investment: number;
     boughtPriceInUSD: number;
-    boughtPriceInPHP: number;
     gainOrLostPercentage: number;
     gain: number;
     overallGainOrLost: number;
@@ -52,75 +57,82 @@ interface InvestmentData {
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'home',
+    standalone: true,
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css'],
-    standalone: true,
-    imports: [NgFor, NgIf, CommonModule, MatButtonModule, MatDialogModule],
+    imports: [CommonModule, NgFor, NgIf, MatButtonModule, MatDialogModule, AddCryptoComponent]
 })
 export class HomeComponent implements OnInit, OnDestroy {
     firestore: Firestore = inject(Firestore);
     items$: Observable<unknown[]>;
+    authService = inject(AuthService);
+    router = inject(Router);
 
-    public aCollection: CollectionReference;
+    public investmentCollectionRef: CollectionReference;
     public investmentData: WritableSignal<InvestmentData[]> = signal([]);
     public isLoading: WritableSignal<boolean> = signal(false);
 
     private cryptoData: WritableSignal<CryptoData[]> = signal([]);
     private subscription: Subscription;
+    private uID: string | undefined;
 
     constructor(
         public minAPIService: MinApiService,
-        public dialog: MatDialog
+        @Inject(MatDialog) public dialog: MatDialog
     ) {
-        this.aCollection = collection(this.firestore, 'investment');
+        this.investmentCollectionRef = collection(this.firestore, 'investment');
     }
 
     ngOnInit() {
         this.initializeCollection();
     }
 
-    private initializeCollection() {
+    private initializeCollection(): void {
+        this.authService.user$.subscribe(user => {
+            this.uID = user?.uid;
+        });
+       
+        if (!this.uID) {
+            console.error("User not authenticated");
+            return;
+        }
+    
         this.isLoading.set(true);
-        this.aCollection = collection(this.firestore, 'investment');
-        collectionData(this.aCollection, { idField: 'id' })
+    
+        // Reference the authenticated user's investment collection
+        this.investmentCollectionRef = collection(this.firestore, `users/${this.uID}/investments`);
+    
+        this.subscription = collectionData(this.investmentCollectionRef, { idField: 'id' })
             .pipe(
-                // Add idField option here
-                tap(data => console.log('Firestore data:', data)),
-                map(data => {
-                    return data.map((element: any) => {
-                        const investmentTotal = element.investment;
-                        const gainOrLost = this.calculatePercentageChange(
-                            element.usd,
-                            element.boughtPriceInUSD
-                        );
-                        const currentGainOrLost = this.calculateInvestment(
-                            element.boughtPriceInUSD,
-                            element.usd,
-                            investmentTotal
-                        );
-
+                tap(data => console.log('Fetched Firestore data:', data)),
+                map(data =>
+                    data.map(element => {
+                        const { id, coin, usd, php, investment, boughtPriceInUSD } = element;
+                        const gainOrLostPercentage = this.calculatePercentageChange(usd, boughtPriceInUSD);
+                        const overallGainOrLost = this.calculateInvestment(boughtPriceInUSD, usd, investment);
+                        const gain = overallGainOrLost - investment;
+    
                         return {
-                            id: element.id, // Include the document ID
-                            coin: element.coin,
-                            usd: element.usd,
-                            php: element.php,
-                            investment: investmentTotal,
-                            boughtPriceInUSD: element.boughtPriceInUSD,
-                            boughtPriceInPHP: element.boughtPriceInPHP,
-                            gainOrLostPercentage: gainOrLost,
-                            gain: currentGainOrLost - investmentTotal,
-                            overallGainOrLost: currentGainOrLost,
+                            id,
+                            coin,
+                            usd,
+                            php,
+                            investment,
+                            boughtPriceInUSD,
+                            gainOrLostPercentage,
+                            gain,
+                            overallGainOrLost
                         };
-                    });
-                }),
+                    })
+                ),
                 tap(mappedData => {
                     this.investmentData.set(mappedData);
                     this.isLoading.set(false);
-                    console.log('Mapped data:', this.investmentData);
+                    console.log('Processed Investment Data:', mappedData);
                 })
             )
             .subscribe();
-    }
+    }   
 
     public calculatePercentageChange(
         currentPrice: number,
@@ -186,7 +198,6 @@ export class HomeComponent implements OnInit, OnDestroy {
                         php: element.php,
                         investment: investmentTotal,
                         boughtPriceInUSD: boughtPrice,
-                        boughtPriceInPHP: boughtPrice,
                         gainOrLostPercentage: gainOrLost,
                         gain: currentGainOrLost - investmentTotal,
                         overallGainOrLost: currentGainOrLost,
@@ -199,25 +210,26 @@ export class HomeComponent implements OnInit, OnDestroy {
         );
     }
 
-    public saveToFirestore(element: any, crypto: any) {
+    public saveToFirestore(element: any, crypto: any) {       
+        if (!this.uID) {
+            console.error("User not authenticated");
+            return;
+        }
+    
         const boughtPrice = crypto.boughtPrice;
         const investmentTotal = crypto.investment;
-        const gainOrLost = this.calculatePercentageChange(
-            element.usd,
-            boughtPrice
-        );
-        const currentGainOrLost = this.calculateInvestment(
-            boughtPrice,
-            element.usd,
-            investmentTotal
-        );
-        addDoc(this.aCollection, {
+        const gainOrLost = this.calculatePercentageChange(element.usd, boughtPrice);
+        const currentGainOrLost = this.calculateInvestment(boughtPrice, element.usd, investmentTotal);
+    
+        // Reference to the authenticated user's investments subcollection
+        const investmentCollectionRef = collection(this.firestore, `users/${this.uID}/investments`);
+    
+        addDoc(investmentCollectionRef, {
             coin: element.name,
             usd: element.usd,
             php: element.php,
             investment: investmentTotal,
             boughtPriceInUSD: boughtPrice,
-            boughtPriceInPHP: boughtPrice,
             gainOrLostPercentage: gainOrLost,
             gain: currentGainOrLost - investmentTotal,
             overallGainOrLost: currentGainOrLost,
@@ -248,37 +260,46 @@ export class HomeComponent implements OnInit, OnDestroy {
             );
     }
 
-    private updatePrice(coins: string[]) {
+    private updatePrice(coins: string[]) {       
+        if (!this.uID) {
+            console.error("User not authenticated");
+            this.isLoading.set(false);
+            return;
+        }
+    
         // Create an observable for each coin's update operation
         const observables = coins.map((coinName, index) => {
             const dataQuery = query(
-                collection(this.firestore, 'investment'),
+                collection(this.firestore, `users/${this.uID}/investments`),
                 where('coin', '==', coinName)
             );
+    
             return from(getDocs(dataQuery)).pipe(
                 concatMap(querySnapshot =>
-                    querySnapshot.docs.map(doc => {
-                        const updateData = {
-                            usd: this.currentPrice[index].usd,
-                            php: this.currentPrice[index].php,
-                        };
-                        return updateDoc(doc.ref, updateData).then(
-                            () => doc.id
-                        );
-                    })
+                    forkJoin(
+                        querySnapshot.docs.map(doc => {
+                            const updateData = {
+                                usd: this.currentPrice[index].usd,
+                                php: this.currentPrice[index].php,
+                            };
+                            return from(updateDoc(doc.ref, updateData)).pipe(
+                                map(() => doc.id)
+                            );
+                        })
+                    )
                 ),
                 catchError(error => {
                     console.error('Error updating document:', error);
-                    return [];
+                    return of([]);
                 })
             );
         });
-
-        // Use zip to execute all observables concurrently
+    
+        // Execute all observables concurrently
         zip(...observables)
             .pipe(finalize(() => this.isLoading.set(false)))
             .subscribe(ids => {
-                ids.forEach(id =>
+                ids.flat().forEach(id =>
                     console.log(
                         'USD and PHP prices successfully updated for document:',
                         id
@@ -286,13 +307,18 @@ export class HomeComponent implements OnInit, OnDestroy {
                 );
             });
     }
+    
 
-    public deleteCoin(data: any) {
-        this.deleteDocument('investment', data.id);
+    public deleteCoin(data: any) {      
+        if (!this.uID) {
+            console.error("User not authenticated");
+            return;
+        }
+        this.deleteDocument(`users/${this.uID}/investments`, data.id);
     }
 
-    public deleteDocument(collectionName: string, docId: string) {
-        const docRef = doc(this.firestore, `${collectionName}/${docId}`);
+    public deleteDocument(collectionPath: string, docId: string) {
+        const docRef = doc(this.firestore, `${collectionPath}/${docId}`);
         deleteDoc(docRef)
             .then(() => {
                 console.log('Document successfully deleted!');
@@ -300,6 +326,12 @@ export class HomeComponent implements OnInit, OnDestroy {
             .catch(error => {
                 console.error('Error removing document: ', error);
             });
+    }
+    
+
+    onLogout() {
+        this.authService.logout();
+        this.router.navigate(['/login']);
     }
 
     ngOnDestroy() {

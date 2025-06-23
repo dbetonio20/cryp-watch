@@ -1,26 +1,21 @@
 import { NgIf } from '@angular/common';
-import { Component } from '@angular/core';
-import {
-    FormBuilder,
-    FormGroup,
-    FormsModule,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-add-crypto',
+    standalone: true,
     templateUrl: './add-crypto.component.html',
     styleUrls: ['./add-crypto.component.css'],
-    standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, NgIf],
+    imports: [FormsModule, ReactiveFormsModule, NgIf]
 })
 export class AddCryptoComponent {
     form: FormGroup;
 
     constructor(
-        private dialogRef: MatDialogRef<AddCryptoComponent>,
+        @Inject(MatDialogRef) private dialogRef: MatDialogRef<AddCryptoComponent>,
         private fb: FormBuilder
     ) {
         this.form = this.fb.group({
