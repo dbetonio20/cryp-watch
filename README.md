@@ -16,7 +16,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm run test -- --watch=false --browsers=ChromeHeadlessCI` to execute the unit tests via [Karma](https://karma-runner.github.io) using the bundled Puppeteer Chromium. This avoids relying on a system Chrome binary and mirrors the CI configuration.
 
 ## Running end-to-end tests
 
