@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { buildInfo } from 'src/environments/build-info';
 
 @Component({
     selector: 'app-landing-page',
@@ -13,6 +14,11 @@ import { Router, RouterLink } from '@angular/router';
 export class LandingPageComponent {
     private readonly router = inject(Router);
     readonly currentYear = new Date().getFullYear();
+    readonly commitHash = buildInfo.gitSha || 'unknown';
+    readonly buildTimestamp =
+        buildInfo.generatedAt && buildInfo.generatedAt !== 'unknown'
+            ? new Date(buildInfo.generatedAt)
+            : undefined;
 
     gotoLogin(): void {
         this.router.navigate(['/login']);

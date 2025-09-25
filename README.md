@@ -58,6 +58,14 @@ npm run build
 firebase deploy --only hosting:cryp-watch
 ```
 
+## Build metadata
+
+The landing page footer displays the deployed commit hash. This is generated automatically by the `npm run set-build-info` script, which runs during install (`postinstall`), before builds, tests, and `npm start`. If you need to refresh the metadata manually, run:
+
+```fish
+npm run set-build-info
+```
+
 ## Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.

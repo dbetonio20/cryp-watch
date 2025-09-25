@@ -62,4 +62,15 @@ describe('LandingPageComponent', () => {
             new Date().getFullYear().toString()
         );
     });
+
+    it('should display the deployed commit hash in the footer', () => {
+        const footerCommit = fixture.debugElement.query(
+            By.css('[data-testid="footer-commit"]')
+        ).nativeElement as HTMLElement;
+
+        expect(footerCommit.textContent).toContain('Deployed commit');
+        expect(footerCommit.textContent).toContain(
+            fixture.componentInstance.commitHash
+        );
+    });
 });

@@ -3,12 +3,17 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+  "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "prettier": "npx prettier --write ."
+    "prettier": "npx prettier --write .",
+  "prestart": "npm run set-build-info",
+    "set-build-info": "node tools/write-build-info.mjs",
+    "postinstall": "npm run set-build-info",
+    "prebuild": "npm run set-build-info",
+    "pretest": "npm run set-build-info"
   },
   "private": true,
   "dependencies": {

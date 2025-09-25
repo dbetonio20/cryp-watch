@@ -46,8 +46,6 @@ Thumbs.db
 *-debug.log
 .runtimeconfig.json
 
-# Environment
-/src/environment/
-
 .nx/cache
-.nx/workspace-data
+# Generated build metadata
+/src/environments/build-info.ts

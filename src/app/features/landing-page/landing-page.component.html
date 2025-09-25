@@ -180,7 +180,16 @@
     </main>
 
     <footer class="landing__footer">
-        <p data-testid="footer-copy">© {{ currentYear }} CrypWatch. Built for traders, analysts, and dreamers.</p>
+        <div class="landing__footer-meta">
+            <p data-testid="footer-copy">© {{ currentYear }} CrypWatch. Built for traders, analysts, and dreamers.</p>
+            <p class="landing__build-info" data-testid="footer-commit">
+                Deployed commit
+                <span class="landing__build-hash">{{ commitHash }}</span>
+                <span *ngIf="buildTimestamp as timestamp">
+                    • {{ timestamp | date: 'medium' }}
+                </span>
+            </p>
+        </div>
         <div class="landing__footer-links">
             <a href="mailto:support@crypwatch.app">Contact support</a>
             <a routerLink="/login">Log in</a>
