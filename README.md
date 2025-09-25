@@ -1,5 +1,7 @@
 # CrypWatch
 
+You can check site here: https://cryp-watch.web.app
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.1.
 
 ## Development server
@@ -17,6 +19,44 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Running unit tests
 
 Run `npm run test -- --watch=false --browsers=ChromeHeadlessCI` to execute the unit tests via [Karma](https://karma-runner.github.io) using the bundled Puppeteer Chromium. This avoids relying on a system Chrome binary and mirrors the CI configuration.
+
+## Deployment
+
+Make sure the [Firebase CLI](https://firebase.google.com/docs/cli) is installed (`npm install -g firebase-tools`) and that you're authenticated (`firebase login`). The project is configured for Firebase Hosting's Angular framework integration, so the CLI will run the Angular production build automatically during deploy.
+
+```fish
+firebase deploy --only hosting:cryp-watch
+```
+
+The production site publishes to https://cryp-watch.web.app. The hosting target is already defined in `.firebaserc`. If you need to switch projects, run `firebase use <project-id>` first. If you prefer to build manually, run `npm run build` and the deploy step will reuse the cached output when available.
+
+## Continuous integration & deployment
+
+Each push or pull request targeting `master` triggers the GitHub Actions workflow defined in `.github/workflows/ci.yml`:
+
+- Installs dependencies with `npm ci`
+- Executes the headless unit test suite
+- Builds the Angular production bundle
+- Deploys to Firebase Hosting (push events only) using the framework integration
+
+### Required repository secrets
+
+| Secret name | Description |
+| --- | --- |
+| `FIREBASE_SERVICE_ACCOUNT` | JSON credentials for a Firebase service account with Hosting Admin permissions. Create a service account in the Firebase console (Project Settings → Service Accounts) and paste the JSON into the secret. |
+
+The default `GITHUB_TOKEN` is used automatically by the workflow; no extra configuration is needed for it.
+
+### Local verification
+
+Before pushing, you can mirror the CI steps locally:
+
+```fish
+npm ci
+npm run test -- --watch=false --browsers=ChromeHeadlessCI
+npm run build
+firebase deploy --only hosting:cryp-watch
+```
 
 ## Running end-to-end tests
 
