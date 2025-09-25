@@ -2,8 +2,18 @@
     "hosting": [
         {
             "target": "cryp-watch",
-            "source": ".",
-            "frameworksBackend": {}
+            "public": "dist/cryp-watch/browser",
+            "ignore": [
+                "firebase.json",
+                "**/.*",
+                "**/node_modules/**"
+            ],
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
         }
     ]
 }
