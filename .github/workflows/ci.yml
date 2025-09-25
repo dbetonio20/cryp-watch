@@ -34,24 +34,36 @@ jobs:
     needs: test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    env:
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
     steps:
+      - name: Skip deploy (missing secret)
+        if: env.FIREBASE_SERVICE_ACCOUNT == ''
+        run: |
+          echo "FIREBASE_SERVICE_ACCOUNT secret not configured. Skipping Firebase deploy."
+          echo "::notice::Set FIREBASE_SERVICE_ACCOUNT in repository secrets to enable production deploys."
+
       - name: Checkout repository
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
         uses: actions/checkout@v4
 
       - name: Setup Node.js
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
       - name: Install dependencies
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
         run: npm ci
 
       - name: Deploy to Firebase Hosting
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          firebaseServiceAccount: "${{ env.FIREBASE_SERVICE_ACCOUNT }}"
           channelId: live
           projectId: cryp-watch
           target: cryp-watch

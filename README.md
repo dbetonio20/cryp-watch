@@ -45,6 +45,8 @@ Each push or pull request targeting `master` triggers the GitHub Actions workflo
 | --- | --- |
 | `FIREBASE_SERVICE_ACCOUNT` | JSON credentials for a Firebase service account with Hosting Admin permissions. Create a service account in the Firebase console (Project Settings → Service Accounts) and paste the JSON into the secret. |
 
+If the secret isn't configured, the deploy job now posts a notice and skips the Firebase deploy step, allowing the build and tests to pass while reminding you to add the credential when you're ready to publish.
+
 The default `GITHUB_TOKEN` is used automatically by the workflow; no extra configuration is needed for it.
 
 ### Local verification
