@@ -2,6 +2,7 @@
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import {
     Component,
+    computed,
     inject,
     OnInit,
     signal,
@@ -71,6 +72,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     public investmentCollectionRef: CollectionReference;
     public investmentData: WritableSignal<InvestmentData[]> = signal([]);
     public isLoading: WritableSignal<boolean> = signal(false);
+    public exchangeRate: WritableSignal<number> = signal(58.27); // Default to user's value
+
+    public totalInvestment = computed(() => this.investmentData().reduce((sum, item) => sum + item.investment, 0));
+    public totalOverall = computed(() => this.investmentData().reduce((sum, item) => sum + item.overallGainOrLost, 0));
+    public totalGainLoss = computed(() => this.totalOverall() - this.totalInvestment());
+    public totalOverallPHP = computed(() => this.totalOverall() * this.exchangeRate());
+    public totalInvestmentPHP = computed(() => this.totalInvestment() * this.exchangeRate());
+    public totalGainLossPHP = computed(() => this.totalGainLoss() * this.exchangeRate());
 
     private cryptoData: WritableSignal<CryptoData[]> = signal([]);
     private subscription: Subscription;
@@ -85,6 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.initializeCollection();
+        this.minAPIService.getExchangeRate().subscribe(rate => this.exchangeRate.set(rate));
     }
 
     private initializeCollection(): void {

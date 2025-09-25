@@ -14,8 +14,9 @@
     <button
         (click)="getUpdatedCryptoData()"
         type="button"
-        class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 lg:mb-0 lg:me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 w-full lg:w-auto">
-        Update
+        [disabled]="isLoading()"
+        class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 lg:mb-0 lg:me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 w-full lg:w-auto disabled:opacity-50 disabled:cursor-not-allowed">
+        {{ isLoading() ? 'Updating...' : 'Update' }}
     </button>
 </div>
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -127,4 +128,33 @@
             </ng-template>
         </tbody>
     </table>
+</div>
+
+<div class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Summary</h3>
+    <p class="text-sm text-gray-700 dark:text-gray-300">
+        Total Investment: <span class="font-medium">{{ totalInvestment() | number: '1.2-2' }} USD</span> | <span class="font-medium">{{ totalInvestmentPHP() | number: '1.2-2' }} PHP</span>
+    </p>
+    <p class="text-sm text-gray-700 dark:text-gray-300">
+        Overall: <span class="font-medium" [ngClass]="{
+            'text-green-500': totalOverall() > 0,
+            'text-red-500': totalOverall() < 0,
+            'text-gray-500': totalOverall() === 0
+        }">{{ totalOverall() | number: '1.2-2' }} USD</span> | <span class="font-medium" [ngClass]="{
+            'text-green-500': totalOverallPHP() > 0,
+            'text-red-500': totalOverallPHP() < 0,
+            'text-gray-500': totalOverallPHP() === 0
+        }">{{ totalOverallPHP() | number: '1.2-2' }} PHP</span>
+    </p>
+    <p class="text-sm text-gray-700 dark:text-gray-300">
+        Total Gain/Loss: <span class="font-medium" [ngClass]="{
+            'text-green-500': totalGainLoss() > 0,
+            'text-red-500': totalGainLoss() < 0,
+            'text-gray-500': totalGainLoss() === 0
+        }">{{ totalGainLoss() | number: '1.2-2' }} USD</span> | <span class="font-medium" [ngClass]="{
+            'text-green-500': totalGainLossPHP() > 0,
+            'text-red-500': totalGainLossPHP() < 0,
+            'text-gray-500': totalGainLossPHP() === 0
+        }">{{ totalGainLossPHP() | number: '1.2-2' }} PHP</span>
+    </p>
 </div>

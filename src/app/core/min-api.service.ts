@@ -51,4 +51,16 @@ export class MinApiService {
                 })
             );
     }
+
+    public getExchangeRate(): Observable<number> {
+        return this.http
+            .get<any>('https://api.exchangerate-api.com/v4/latest/USD')
+            .pipe(
+                map(data => data.rates.PHP),
+                catchError(error => {
+                    console.error('Error fetching exchange rate:', error);
+                    return throwError(error);
+                })
+            );
+    }
 }
