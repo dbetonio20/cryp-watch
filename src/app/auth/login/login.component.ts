@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
     AbstractControl,
     FormBuilder,
@@ -16,7 +17,8 @@ import { Router } from '@angular/router';
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css'],
-    imports: [FormsModule, ReactiveFormsModule]
+    standalone: true,
+    imports: [CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class LoginComponent implements OnInit {
     authService = inject(AuthService);
@@ -25,26 +27,50 @@ export class LoginComponent implements OnInit {
     fb = inject(FormBuilder);
 
     form = this.fb.nonNullable.group({
-        email: ['', this.customEmailValidator],
+        email: ['', [Validators.required, this.customEmailValidator]],
         password: ['', Validators.required],
     });
+
+    submitted = false;
+    showPassword = false;
+
+    get passwordStrength() : { score: number; label: string; color: string } {
+        const value = this.form.controls.password.value || '';
+        let score = 0;
+        if (value.length >= 6) score++;
+        if (/[A-Z]/.test(value)) score++;
+        if (/[a-z]/.test(value)) score++;
+        if (/\d/.test(value)) score++;
+        if (/[^A-Za-z0-9]/.test(value)) score++;
+
+        const labels = ['Very weak', 'Weak', 'Fair', 'Good', 'Strong'];
+        const colors = ['#ef4444', '#f59e0b', '#eab308', '#22c55e', '#16a34a'];
+        const idx = Math.min(Math.max(score - 1, 0), 4);
+        return { score, label: labels[idx], color: colors[idx] };
+    }
 
     constructor() {}
 
     ngOnInit() {}
 
     onLogin() {
-        
+        this.submitted = true;
+        if (this.form.invalid) {
+            this.form.markAllAsTouched();
+            return;
+        }
+
         const rawForm = this.form.getRawValue();
-        if(rawForm.email === 'dom'){
+        if (rawForm.email === 'dom') {
             rawForm.email = 'dom@ereflect.com';
         }
-        console.log(rawForm);
-        this.authService
-            .login(rawForm.email, rawForm.password)
-            .subscribe(data => {
-                this.router.navigate(['/cryp-watch']);
+        this.authService.login(rawForm.email, rawForm.password).subscribe({
+            next: () => this.router.navigate(['/cryp-watch'])
         });
+    }
+
+    togglePasswordVisibility() {
+        this.showPassword = !this.showPassword;
     }
 
     onLogout() {
