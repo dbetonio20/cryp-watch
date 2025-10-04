@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+// AppComponent is bootstrapped via bootstrapApplication in main.ts
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -13,9 +13,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 
 @NgModule({ declarations: [],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [], imports: [BrowserModule,
         AppRoutingModule,
-        AppComponent,
         CommonModule,
         MatButtonModule,
         MatDialogModule

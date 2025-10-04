@@ -13,3 +13,8 @@ html, body {
 body {
   overflow-x: hidden;
 }
+
+/* Custom Modal Styles */
+.custom-modal-panel .mdc-dialog__surface {
+  border-radius: 8px !important;
+}

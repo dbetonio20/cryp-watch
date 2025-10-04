@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { ModalService } from '../../core/modal/modal.service';
 
 @Component({
     selector: 'app-login',
@@ -23,6 +24,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
     authService = inject(AuthService);
     router = inject(Router);
+    modalService = inject(ModalService);
 
     fb = inject(FormBuilder);
 
@@ -65,7 +67,10 @@ export class LoginComponent implements OnInit {
             rawForm.email = 'dom@ereflect.com';
         }
         this.authService.login(rawForm.email, rawForm.password).subscribe({
-            next: () => this.router.navigate(['/cryp-watch'])
+            next: () => this.router.navigate(['/cryp-watch']),
+            error: (error) => {
+                this.modalService.openError('Login Failed', 'Invalid email or password. Please try again.');
+            }
         });
     }
 

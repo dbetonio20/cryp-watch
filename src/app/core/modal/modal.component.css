@@ -1,0 +1,108 @@
+/* Modal Container */
+.modal-container {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+}
+
+/* Title Styling */
+h2[mat-dialog-title] {
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Error Title */
+.error-title {
+    color: #dc2626;
+    border-bottom-color: #fecaca;
+}
+
+/* Content Area */
+mat-dialog-content {
+    padding: 1rem 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #4b5563;
+}
+
+mat-dialog-content p {
+    margin: 0;
+}
+
+.error-message {
+    color: #dc2626;
+}
+
+/* Actions/Buttons Area */
+mat-dialog-actions {
+    padding-top: 1rem;
+    gap: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+mat-dialog-actions button {
+    min-width: 80px;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+/* Primary/Confirm Button */
+mat-dialog-actions button:last-child {
+    background-color: #3b82f6;
+    color: white;
+}
+
+mat-dialog-actions button:last-child:hover {
+    background-color: #2563eb;
+}
+
+/* Error Button */
+.error-button {
+    background-color: #dc2626 !important;
+}
+
+.error-button:hover {
+    background-color: #b91c1c !important;
+}
+
+/* Cancel Button */
+mat-dialog-actions button:first-child {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+mat-dialog-actions button:first-child:hover {
+    background-color: #e5e7eb;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .modal-container {
+        padding: 1rem;
+    }
+
+    h2[mat-dialog-title] {
+        font-size: 1.125rem;
+    }
+
+    mat-dialog-content {
+        font-size: 0.875rem;
+    }
+
+    mat-dialog-actions {
+        flex-direction: column-reverse;
+    }
+
+    mat-dialog-actions button {
+        width: 100%;
+    }
+}
