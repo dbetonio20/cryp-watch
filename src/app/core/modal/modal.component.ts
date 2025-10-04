@@ -1,13 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+
 import { ModalData, ModalResult } from './modal.interface';
 
 @Component({
     selector: 'app-modal',
     standalone: true,
-    imports: [CommonModule, MatDialogModule, MatButtonModule],
+    imports: [MatDialogModule, MatButtonModule],
     templateUrl: './modal.component.html',
     styleUrls: ['./modal.component.css']
 })

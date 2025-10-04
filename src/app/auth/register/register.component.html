@@ -1,124 +1,148 @@
 <!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
 <div class="flex justify-center items-center min-h-screen px-4">
-    <div class="w-full max-w-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 sm:p-8 rounded-2xl shadow-lg">
-        <h2 class="text-2xl font-semibold tracking-tight text-center text-slate-900 dark:text-slate-100 mb-6">Register</h2>
-        <form [formGroup]="form" (ngSubmit)="onRegister()" novalidate>
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    formControlName="email"
+  <div class="w-full max-w-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 sm:p-8 rounded-2xl shadow-lg">
+    <h2 class="text-2xl font-semibold tracking-tight text-center text-slate-900 dark:text-slate-100 mb-6">Register</h2>
+    <form [formGroup]="form" (ngSubmit)="onRegister()" novalidate>
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
                     [ngClass]="{
                         'border-red-500 focus:ring-red-200': (form.controls.email.touched || submitted) && form.controls.email.invalid,
                         'border-slate-300 dark:border-slate-600': !(form.controls.email.touched || submitted) || form.controls.email.valid
                     }"
-                    class="w-full mt-1 px-3 py-2 text-sm sm:text-base rounded-md border outline-none transition focus:ring-2 focus:border-blue-500 placeholder-slate-400" aria-describedby="email-error" placeholder="name@company.com" />
-                <div class="mt-1 min-h-5 text-sm" aria-live="polite">
-                    <p class="text-red-600" *ngIf="(form.controls.email.touched || submitted) && form.controls.email.errors?.['required']">Email is required.</p>
-                    <p class="text-red-600" *ngIf="(form.controls.email.touched || submitted) && form.controls.email.errors?.['email']">Please enter a valid email address.</p>
-                </div>
-            </div>
+          class="w-full mt-1 px-3 py-2 text-sm sm:text-base rounded-md border outline-none transition focus:ring-2 focus:border-blue-500 placeholder-slate-400" aria-describedby="email-error" placeholder="name@company.com" />
+        <div class="mt-1 min-h-5 text-sm" aria-live="polite">
+          @if ((form.controls.email.touched || submitted) && form.controls.email.errors?.['required']) {
+            <p class="text-red-600">Email is required.</p>
+          }
+          @if ((form.controls.email.touched || submitted) && form.controls.email.errors?.['email']) {
+            <p class="text-red-600">Please enter a valid email address.</p>
+          }
+        </div>
+      </div>
 
-            <div class="mb-4">
-                <label for="username" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Username</label>
-                <input
-                    id="username"
-                    type="text"
-                    formControlName="username"
+      <div class="mb-4">
+        <label for="username" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Username</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
                     [ngClass]="{
                         'border-red-500 focus:ring-red-200': (form.controls.username.touched || submitted) && form.controls.username.invalid,
                         'border-slate-300 dark:border-slate-600': !(form.controls.username.touched || submitted) || form.controls.username.valid
                     }"
-                    class="w-full mt-1 px-3 py-2 text-sm sm:text-base rounded-md border outline-none transition focus:ring-2 focus:border-blue-500 placeholder-slate-400" aria-describedby="username-error" placeholder="Your username" />
-                <div class="mt-1 min-h-5 text-sm" aria-live="polite">
-                    <p class="text-red-600" *ngIf="(form.controls.username.touched || submitted) && form.controls.username.errors?.['required']">Username is required.</p>
-                </div>
-            </div>
+          class="w-full mt-1 px-3 py-2 text-sm sm:text-base rounded-md border outline-none transition focus:ring-2 focus:border-blue-500 placeholder-slate-400" aria-describedby="username-error" placeholder="Your username" />
+        <div class="mt-1 min-h-5 text-sm" aria-live="polite">
+          @if ((form.controls.username.touched || submitted) && form.controls.username.errors?.['required']) {
+            <p class="text-red-600">Username is required.</p>
+          }
+        </div>
+      </div>
 
-            <div class="mb-4">
-                <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Password</label>
-                <div class="relative">
-                    <input
-                        id="password"
-                        [type]="showPassword ? 'text' : 'password'"
-                        formControlName="password"
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Password</label>
+        <div class="relative">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
                         [ngClass]="{
                             'border-red-500 focus:ring-red-200': (form.controls.password.touched || submitted) && form.controls.password.invalid,
                             'border-slate-300': !(form.controls.password.touched || submitted) || form.controls.password.valid
                         }"
-                        class="w-full mt-1 px-3 py-2 text-sm sm:text-base rounded-md border outline-none transition focus:ring-2 focus:border-blue-500 placeholder-slate-400 pr-10" aria-describedby="password-error" placeholder="Create a password" />
-                    <button
-                        type="button"
-                        (click)="togglePasswordVisibility()"
-                        [attr.aria-pressed]="showPassword"
-                        aria-label="Toggle password visibility"
-                        class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-                    >
-                        <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
-                            <path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z"/>
-                            <circle cx="12" cy="12" r="3"/>
-                        </svg>
-                        <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
-                            <path d="M3.53 2.47 2.47 3.53 5.2 6.26C3.4 7.54 2 9.37 2 12c0 0 3 7 10 7 2.01 0 3.74-.5 5.17-1.25l2.83 2.83 1.06-1.06L3.53 2.47ZM12 17c-4.97 0-7.73-4.02-8.73-5 .49-.52 1.37-1.38 2.59-2.14l2.1 2.1A4.99 4.99 0 0 0 12 17Zm0-10c4.97 0 7.73 4.02 8.73 5-.49.52-1.37 1.38-2.59 2.14l-2.11-2.11A5 5 0 0 0 12 7Z"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="mt-2" *ngIf="form.controls.password.value">
-                    <div class="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full">
-                        <div class="h-1.5 rounded-full transition-all" [style.width.%]="(passwordStrength.score/5)*100" [style.background]="passwordStrength.color"></div>
-                    </div>
-                    <div class="text-xs mt-1 font-medium" [style.color]="passwordStrength.color">
-                        Strength: {{ passwordStrength.label }}
-                    </div>
-                </div>
-                <div class="mt-1 min-h-5 text-sm" aria-live="polite">
-                    <p class="text-red-600" *ngIf="(form.controls.password.touched || submitted) && form.controls.password.errors?.['required']">Password is required.</p>
-                    <p class="text-red-600" *ngIf="(form.controls.password.touched || submitted) && form.controls.password.errors?.['minlength']">Password must be at least 6 characters.</p>
-                </div>
+            class="w-full mt-1 px-3 py-2 text-sm sm:text-base rounded-md border outline-none transition focus:ring-2 focus:border-blue-500 placeholder-slate-400 pr-10" aria-describedby="password-error" placeholder="Create a password" />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-pressed]="showPassword"
+            aria-label="Toggle password visibility"
+            class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+            >
+            @if (!showPassword) {
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                <path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            }
+            @if (showPassword) {
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                <path d="M3.53 2.47 2.47 3.53 5.2 6.26C3.4 7.54 2 9.37 2 12c0 0 3 7 10 7 2.01 0 3.74-.5 5.17-1.25l2.83 2.83 1.06-1.06L3.53 2.47ZM12 17c-4.97 0-7.73-4.02-8.73-5 .49-.52 1.37-1.38 2.59-2.14l2.1 2.1A4.99 4.99 0 0 0 12 17Zm0-10c4.97 0 7.73 4.02 8.73 5-.49.52-1.37 1.38-2.59 2.14l-2.11-2.11A5 5 0 0 0 12 7Z"/>
+              </svg>
+            }
+          </button>
+        </div>
+        @if (form.controls.password.value) {
+          <div class="mt-2">
+            <div class="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full">
+              <div class="h-1.5 rounded-full transition-all" [style.width.%]="(passwordStrength.score/5)*100" [style.background]="passwordStrength.color"></div>
             </div>
+            <div class="text-xs mt-1 font-medium" [style.color]="passwordStrength.color">
+              Strength: {{ passwordStrength.label }}
+            </div>
+          </div>
+        }
+        <div class="mt-1 min-h-5 text-sm" aria-live="polite">
+          @if ((form.controls.password.touched || submitted) && form.controls.password.errors?.['required']) {
+            <p class="text-red-600">Password is required.</p>
+          }
+          @if ((form.controls.password.touched || submitted) && form.controls.password.errors?.['minlength']) {
+            <p class="text-red-600">Password must be at least 6 characters.</p>
+          }
+        </div>
+      </div>
 
-            <div class="mb-4">
-                <label for="confirmPassword" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Confirm Password</label>
-                <div class="relative">
-                    <input
-                        id="confirmPassword"
-                        [type]="showConfirmPassword ? 'text' : 'password'"
-                        formControlName="confirmPassword"
+      <div class="mb-4">
+        <label for="confirmPassword" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Confirm Password</label>
+        <div class="relative">
+          <input
+            id="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
                         [ngClass]="{
                             'border-red-500 focus:ring-red-200': (form.controls.confirmPassword.touched || submitted) && (form.controls.confirmPassword.invalid || form.errors?.['passwordsMismatch']),
                             'border-slate-300': !(form.controls.confirmPassword.touched || submitted) || (form.controls.confirmPassword.valid && !form.errors?.['passwordsMismatch'])
                         }"
-                        class="w-full mt-1 px-3 py-2 text-sm sm:text-base rounded-md border outline-none transition focus:ring-2 focus:border-blue-500 placeholder-slate-400 pr-10" aria-describedby="confirm-password-error" placeholder="Re-enter your password" />
-                    <button
-                        type="button"
-                        (click)="toggleConfirmPasswordVisibility()"
-                        [attr.aria-pressed]="showConfirmPassword"
-                        aria-label="Toggle confirm password visibility"
-                        class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-                    >
-                        <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
-                            <path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z"/>
-                            <circle cx="12" cy="12" r="3"/>
-                        </svg>
-                        <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
-                            <path d="M3.53 2.47 2.47 3.53 5.2 6.26C3.4 7.54 2 9.37 2 12c0 0 3 7 10 7 2.01 0 3.74-.5 5.17-1.25l2.83 2.83 1.06-1.06L3.53 2.47ZM12 17c-4.97 0-7.73 4.02-8.73-5 .49-.52 1.37-1.38 2.59-2.14l2.1 2.1A4.99 4.99 0 0 0 12 17Zm0-10c4.97 0 7.73 4.02 8.73 5-.49.52-1.37 1.38-2.59 2.14l-2.11-2.11A5 5 0 0 0 12 7Z"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="mt-1 min-h-5 text-sm" aria-live="polite">
-                    <p class="text-red-600" *ngIf="(form.controls.confirmPassword.touched || submitted) && form.controls.confirmPassword.errors?.['required']">Confirm Password is required.</p>
-                    <p class="text-red-600" *ngIf="(form.controls.confirmPassword.touched || submitted) && !form.controls.confirmPassword.errors?.['required'] && form.errors?.['passwordsMismatch']">Passwords do not match.</p>
-                </div>
-            </div>
-
-            <button
-                type="submit"
-                class="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                [disabled]="form.invalid"
+            class="w-full mt-1 px-3 py-2 text-sm sm:text-base rounded-md border outline-none transition focus:ring-2 focus:border-blue-500 placeholder-slate-400 pr-10" aria-describedby="confirm-password-error" placeholder="Re-enter your password" />
+          <button
+            type="button"
+            (click)="toggleConfirmPasswordVisibility()"
+            [attr.aria-pressed]="showConfirmPassword"
+            aria-label="Toggle confirm password visibility"
+            class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
             >
-                Register
-            </button>
-        </form>
-    </div>
+            @if (!showConfirmPassword) {
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                <path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            }
+            @if (showConfirmPassword) {
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                <path d="M3.53 2.47 2.47 3.53 5.2 6.26C3.4 7.54 2 9.37 2 12c0 0 3 7 10 7 2.01 0 3.74-.5 5.17-1.25l2.83 2.83 1.06-1.06L3.53 2.47ZM12 17c-4.97 0-7.73 4.02-8.73-5 .49-.52 1.37-1.38 2.59-2.14l2.1 2.1A4.99 4.99 0 0 0 12 17Zm0-10c4.97 0 7.73 4.02 8.73 5-.49.52-1.37 1.38-2.59 2.14l-2.11-2.11A5 5 0 0 0 12 7Z"/>
+              </svg>
+            }
+          </button>
+        </div>
+        <div class="mt-1 min-h-5 text-sm" aria-live="polite">
+          @if ((form.controls.confirmPassword.touched || submitted) && form.controls.confirmPassword.errors?.['required']) {
+            <p class="text-red-600">Confirm Password is required.</p>
+          }
+          @if ((form.controls.confirmPassword.touched || submitted) && !form.controls.confirmPassword.errors?.['required'] && form.errors?.['passwordsMismatch']) {
+            <p class="text-red-600">Passwords do not match.</p>
+          }
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="form.invalid"
+        >
+        Register
+      </button>
+    </form>
+  </div>
 </div>

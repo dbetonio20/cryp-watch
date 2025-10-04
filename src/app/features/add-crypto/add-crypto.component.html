@@ -1,91 +1,94 @@
 <!-- Main modal -->
 <div class="relative w-full max-w-2xl max-h-full">
-    <!-- Modal content -->
-    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-        <div class="p-4 md:p-5 space-y-4">
-            <form
-                [formGroup]="form"
-                class="max-w-md mx-auto"
-                (ngSubmit)="save()">
-                <div class="relative z-0 w-full mb-5 group">
-                    <input
-                        formControlName="coinName"
-                        name="coinName"
-                        id="coinName"
-                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                        placeholder=" "
-                        aria-required="true"
-                        aria-label="Coin Abbreviation" />
-                    <label
-                        for="coinName"
-                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                        Coin Abbreviation</label
-                    >
+  <!-- Modal content -->
+  <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+    <div class="p-4 md:p-5 space-y-4">
+      <form
+        [formGroup]="form"
+        class="max-w-md mx-auto"
+        (ngSubmit)="save()">
+        <div class="relative z-0 w-full mb-5 group">
+          <input
+            formControlName="coinName"
+            name="coinName"
+            id="coinName"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            aria-required="true"
+            aria-label="Coin Abbreviation" />
+          <label
+            for="coinName"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+            Coin Abbreviation</label
+            >
+            @if (
+              form.get('coinName')?.invalid &&
+              form.get('coinName')?.touched
+              ) {
+              <div
+                class="text-red-600 text-sm">
+                Coin Abbreviation is required.
+              </div>
+            }
+          </div>
+          <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="relative z-0 w-full mb-5 group">
+              <input
+                formControlName="investment"
+                type="number"
+                name="investment"
+                id="investment"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" "
+                aria-required="true"
+                aria-label="Investment USD" />
+              <label
+                for="investment"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                Investment USD</label
+                >
+                @if (
+                  form.get('investment')?.invalid &&
+                  form.get('investment')?.touched
+                  ) {
+                  <div
+                    class="text-red-600 text-sm">
+                    Valid investment amount is required.
+                  </div>
+                }
+              </div>
+              <div class="relative z-0 w-full mb-5 group">
+                <input
+                  formControlName="boughtPrice"
+                  type="number"
+                  name="boughtPrice"
+                  id="boughtPrice"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  aria-required="true"
+                  aria-label="Bought Price" />
+                <label
+                  for="boughtPrice"
+                  class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                  Bought Price</label
+                  >
+                  @if (
+                    form.get('boughtPrice')?.invalid &&
+                    form.get('boughtPrice')?.touched
+                    ) {
                     <div
-                        *ngIf="
-                            form.get('coinName')?.invalid &&
-                            form.get('coinName')?.touched
-                        "
-                        class="text-red-600 text-sm">
-                        Coin Abbreviation is required.
+                      class="text-red-600 text-sm">
+                      Valid bought price is required.
                     </div>
+                  }
                 </div>
-                <div class="grid md:grid-cols-2 md:gap-6">
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input
-                            formControlName="investment"
-                            type="number"
-                            name="investment"
-                            id="investment"
-                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder=" "
-                            aria-required="true"
-                            aria-label="Investment USD" />
-                        <label
-                            for="investment"
-                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                            Investment USD</label
-                        >
-                        <div
-                            *ngIf="
-                                form.get('investment')?.invalid &&
-                                form.get('investment')?.touched
-                            "
-                            class="text-red-600 text-sm">
-                            Valid investment amount is required.
-                        </div>
-                    </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input
-                            formControlName="boughtPrice"
-                            type="number"
-                            name="boughtPrice"
-                            id="boughtPrice"
-                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder=" "
-                            aria-required="true"
-                            aria-label="Bought Price" />
-                        <label
-                            for="boughtPrice"
-                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                            Bought Price</label
-                        >
-                        <div
-                            *ngIf="
-                                form.get('boughtPrice')?.invalid &&
-                                form.get('boughtPrice')?.touched
-                            "
-                            class="text-red-600 text-sm">
-                            Valid bought price is required.
-                        </div>
-                    </div>
-                </div>
-                <button
-                    type="submit"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Add
-                </button>
+              </div>
+              <button
+                type="submit"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Add
+              </button>
             </form>
+          </div>
         </div>
-    </div>
-</div>
+      </div>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
     Component,
     computed,
@@ -61,7 +61,7 @@ interface InvestmentData {
     standalone: true,
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css'],
-    imports: [CommonModule, NgFor, NgIf, MatButtonModule, MatDialogModule]
+    imports: [CommonModule, MatButtonModule, MatDialogModule]
 })
 export class HomeComponent implements OnInit, OnDestroy {
     firestore: Firestore = inject(Firestore);

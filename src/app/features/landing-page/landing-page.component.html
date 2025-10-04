@@ -1,199 +1,201 @@
 <div class="landing bg-gradient">
-    <header class="landing__header">
-        <div class="landing__brand">
-            <img
-                src="assets/favicon.ico"
-                alt="CrypWatch logo"
-                class="landing__logo" />
-            <span class="landing__brand-name">CrypWatch</span>
-        </div>
+  <header class="landing__header">
+    <div class="landing__brand">
+      <img
+        src="assets/favicon.ico"
+        alt="CrypWatch logo"
+        class="landing__logo" />
+      <span class="landing__brand-name">CrypWatch</span>
+    </div>
 
-        <nav class="landing__nav" aria-label="Primary">
-            <a routerLink="/" fragment="features">Features</a>
-            <a routerLink="/" fragment="analytics">Analytics</a>
-            <a routerLink="/" fragment="security">Security</a>
-        </nav>
+    <nav class="landing__nav" aria-label="Primary">
+      <a routerLink="/" fragment="features">Features</a>
+      <a routerLink="/" fragment="analytics">Analytics</a>
+      <a routerLink="/" fragment="security">Security</a>
+    </nav>
 
-        <div class="landing__cta">
-            <button
-                type="button"
-                class="btn btn--ghost"
-                data-testid="header-login"
-                (click)="gotoLogin()"
+    <div class="landing__cta">
+      <button
+        type="button"
+        class="btn btn--ghost"
+        data-testid="header-login"
+        (click)="gotoLogin()"
+        >
+        Log in
+      </button>
+      <button
+        type="button"
+        class="btn"
+        data-testid="header-register"
+        (click)="gotoRegister()"
+        >
+        Create account
+      </button>
+    </div>
+  </header>
+
+  <main class="landing__main">
+    <section class="hero">
+      <div class="hero__headline">
+        <span class="hero__badge">All-in-one crypto intelligence</span>
+        <h1>Become the smartest trader in the room.</h1>
+        <p>
+          CrypWatch aggregates live market data, tracks your portfolio in real time, and surfaces
+          opportunities before they trend. Trade confidently with AI-driven alerts and crystal clear
+          insights.
+        </p>
+        <div class="hero__actions">
+          <button
+            type="button"
+            class="btn btn--primary"
+            data-testid="hero-register"
+            (click)="gotoRegister()"
             >
-                Log in
-            </button>
-            <button
-                type="button"
-                class="btn"
-                data-testid="header-register"
-                (click)="gotoRegister()"
+            Start for free
+          </button>
+          <button
+            type="button"
+            class="btn btn--secondary"
+            data-testid="hero-login"
+            (click)="gotoLogin()"
             >
-                Create account
-            </button>
+            Explore the demo
+          </button>
         </div>
-    </header>
-
-    <main class="landing__main">
-        <section class="hero">
-            <div class="hero__headline">
-                <span class="hero__badge">All-in-one crypto intelligence</span>
-                <h1>Become the smartest trader in the room.</h1>
-                <p>
-                    CrypWatch aggregates live market data, tracks your portfolio in real time, and surfaces
-                    opportunities before they trend. Trade confidently with AI-driven alerts and crystal clear
-                    insights.
-                </p>
-                <div class="hero__actions">
-                    <button
-                        type="button"
-                        class="btn btn--primary"
-                        data-testid="hero-register"
-                        (click)="gotoRegister()"
-                    >
-                        Start for free
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn--secondary"
-                        data-testid="hero-login"
-                        (click)="gotoLogin()"
-                    >
-                        Explore the demo
-                    </button>
-                </div>
-                <ul class="hero__stats" id="analytics">
-                    <li>
-                        <span>120k+</span>
-                        <p>Tracked wallets daily</p>
-                    </li>
-                    <li>
-                        <span>98%</span>
-                        <p>User retention month over month</p>
-                    </li>
-                    <li>
-                        <span>24/7</span>
-                        <p>Automated alerting coverage</p>
-                    </li>
-                </ul>
+        <ul class="hero__stats" id="analytics">
+          <li>
+            <span>120k+</span>
+            <p>Tracked wallets daily</p>
+          </li>
+          <li>
+            <span>98%</span>
+            <p>User retention month over month</p>
+          </li>
+          <li>
+            <span>24/7</span>
+            <p>Automated alerting coverage</p>
+          </li>
+        </ul>
+      </div>
+      <div class="hero__visual" aria-hidden="true">
+        <div class="hero__card">
+          <div class="hero__card-header">
+            <span class="hero__card-title">Portfolio snapshot</span>
+            <span class="hero__card-subtitle">Updated just now</span>
+          </div>
+          <div class="hero__chart">
+            <div class="hero__chart-bars">
+              <span style="--value: 85"></span>
+              <span style="--value: 65"></span>
+              <span style="--value: 92"></span>
+              <span style="--value: 45"></span>
+              <span style="--value: 74"></span>
             </div>
-            <div class="hero__visual" aria-hidden="true">
-                <div class="hero__card">
-                    <div class="hero__card-header">
-                        <span class="hero__card-title">Portfolio snapshot</span>
-                        <span class="hero__card-subtitle">Updated just now</span>
-                    </div>
-                    <div class="hero__chart">
-                        <div class="hero__chart-bars">
-                            <span style="--value: 85"></span>
-                            <span style="--value: 65"></span>
-                            <span style="--value: 92"></span>
-                            <span style="--value: 45"></span>
-                            <span style="--value: 74"></span>
-                        </div>
-                    </div>
-                    <dl class="hero__metrics">
-                        <div>
-                            <dt>Total balance</dt>
-                            <dd>$48,520</dd>
-                        </div>
-                        <div>
-                            <dt>24h performance</dt>
-                            <dd class="text-positive">+12.4%</dd>
-                        </div>
-                        <div>
-                            <dt>Risk index</dt>
-                            <dd class="text-warning">Moderate</dd>
-                        </div>
-                    </dl>
-                </div>
+          </div>
+          <dl class="hero__metrics">
+            <div>
+              <dt>Total balance</dt>
+              <dd>$48,520</dd>
             </div>
-        </section>
-
-        <section class="features" id="features">
-            <h2>Everything you need to stay ahead.</h2>
-            <p class="features__subtitle">
-                Purpose-built dashboards, configurable alerts, and institutional-grade analytics—all wrapped in a
-                sleek, responsive experience.
-            </p>
-            <div class="features__grid">
-                <article>
-                    <h3>Unified portfolio tracking</h3>
-                    <p>Connect wallets and exchanges in minutes. Monitor performance across assets with precision</p>
-                    <ul>
-                        <li>Multi-chain visibility</li>
-                        <li>Smart categorization</li>
-                        <li>Historical performance exports</li>
-                    </ul>
-                </article>
-                <article>
-                    <h3>AI-powered alerts</h3>
-                    <p>React instantly to market swings with alerts tuned to your risk appetite and strategy.</p>
-                    <ul>
-                        <li>Volatility detection</li>
-                        <li>Whale transactions</li>
-                        <li>Custom technical triggers</li>
-                    </ul>
-                </article>
-                <article id="security">
-                    <h3>Bank-grade security</h3>
-                    <p>
-                        We use zero-knowledge safeguards, hardware key support, and round-the-clock monitoring to keep
-                        your data safe.
-                    </p>
-                    <ul>
-                        <li>SOC 2 Type II compliant</li>
-                        <li>End-to-end encryption</li>
-                        <li>Granular access controls</li>
-                    </ul>
-                </article>
+            <div>
+              <dt>24h performance</dt>
+              <dd class="text-positive">+12.4%</dd>
             </div>
-        </section>
-
-        <section class="cta">
-            <div class="cta__content">
-                <h2>Ready to master the market?</h2>
-                <p>
-                    Join thousands of investors who track, analyze, and act on crypto signals faster than ever. Your first
-                    14 days are on us—cancel anytime.
-                </p>
+            <div>
+              <dt>Risk index</dt>
+              <dd class="text-warning">Moderate</dd>
             </div>
-            <div class="cta__actions">
-                <button
-                    type="button"
-                    class="btn btn--primary"
-                    data-testid="cta-register"
-                    (click)="gotoRegister()"
-                >
-                    Create your account
-                </button>
-                <button
-                    type="button"
-                    class="btn btn--ghost"
-                    data-testid="cta-login"
-                    (click)="gotoLogin()"
-                >
-                    I already have an account
-                </button>
-            </div>
-        </section>
-    </main>
-
-    <footer class="landing__footer">
-        <div class="landing__footer-meta">
-            <p data-testid="footer-copy">© {{ currentYear }} CrypWatch. Built for traders, analysts, and dreamers.</p>
-            <p class="landing__build-info" data-testid="footer-commit">
-                Deployed commit
-                <span class="landing__build-hash">{{ commitHash }}</span>
-                <span *ngIf="buildTimestamp as timestamp">
-                    • {{ timestamp | date: 'medium' }}
-                </span>
-            </p>
+          </dl>
         </div>
-        <div class="landing__footer-links">
-            <a href="mailto:support@crypwatch.app">Contact support</a>
-            <a routerLink="/login">Log in</a>
-            <a routerLink="/register">Register</a>
-        </div>
-    </footer>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <h2>Everything you need to stay ahead.</h2>
+      <p class="features__subtitle">
+        Purpose-built dashboards, configurable alerts, and institutional-grade analytics—all wrapped in a
+        sleek, responsive experience.
+      </p>
+      <div class="features__grid">
+        <article>
+          <h3>Unified portfolio tracking</h3>
+          <p>Connect wallets and exchanges in minutes. Monitor performance across assets with precision</p>
+          <ul>
+            <li>Multi-chain visibility</li>
+            <li>Smart categorization</li>
+            <li>Historical performance exports</li>
+          </ul>
+        </article>
+        <article>
+          <h3>AI-powered alerts</h3>
+          <p>React instantly to market swings with alerts tuned to your risk appetite and strategy.</p>
+          <ul>
+            <li>Volatility detection</li>
+            <li>Whale transactions</li>
+            <li>Custom technical triggers</li>
+          </ul>
+        </article>
+        <article id="security">
+          <h3>Bank-grade security</h3>
+          <p>
+            We use zero-knowledge safeguards, hardware key support, and round-the-clock monitoring to keep
+            your data safe.
+          </p>
+          <ul>
+            <li>SOC 2 Type II compliant</li>
+            <li>End-to-end encryption</li>
+            <li>Granular access controls</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="cta__content">
+        <h2>Ready to master the market?</h2>
+        <p>
+          Join thousands of investors who track, analyze, and act on crypto signals faster than ever. Your first
+          14 days are on us—cancel anytime.
+        </p>
+      </div>
+      <div class="cta__actions">
+        <button
+          type="button"
+          class="btn btn--primary"
+          data-testid="cta-register"
+          (click)="gotoRegister()"
+          >
+          Create your account
+        </button>
+        <button
+          type="button"
+          class="btn btn--ghost"
+          data-testid="cta-login"
+          (click)="gotoLogin()"
+          >
+          I already have an account
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="landing__footer">
+    <div class="landing__footer-meta">
+      <p data-testid="footer-copy">© {{ currentYear }} CrypWatch. Built for traders, analysts, and dreamers.</p>
+      <p class="landing__build-info" data-testid="footer-commit">
+        Deployed commit
+        <span class="landing__build-hash">{{ commitHash }}</span>
+        @if (buildTimestamp; as timestamp) {
+          <span>
+            • {{ timestamp | date: 'medium' }}
+          </span>
+        }
+      </p>
+    </div>
+    <div class="landing__footer-links">
+      <a href="mailto:support@crypwatch.app">Contact support</a>
+      <a routerLink="/login">Log in</a>
+      <a routerLink="/register">Register</a>
+    </div>
+  </footer>
 </div>

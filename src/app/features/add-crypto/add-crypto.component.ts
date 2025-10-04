@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
     standalone: true,
     templateUrl: './add-crypto.component.html',
     styleUrls: ['./add-crypto.component.css'],
-    imports: [FormsModule, ReactiveFormsModule, NgIf]
+    imports: [FormsModule, ReactiveFormsModule]
 })
 export class AddCryptoComponent {
     form: FormGroup;

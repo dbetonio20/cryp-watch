@@ -1,23 +1,24 @@
 <div class="modal-container">
-    <h2 mat-dialog-title [class.error-title]="data.type === 'error'">
-        {{ data.title }}
-    </h2>
-    <mat-dialog-content>
-        <p [class.error-message]="data.type === 'error'">{{ data.message }}</p>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-        <button 
-            mat-raised-button 
-            *ngIf="data.type === 'confirm'" 
-            (click)="onCancel()">
-            {{ data.cancelText || 'Cancel' }}
-        </button>
-        <button 
-            mat-raised-button
-            [class.error-button]="data.type === 'error'"
-            [mat-dialog-close]="data.type === 'alert' ? { confirmed: true } : null"
-            (click)="data.type === 'confirm' ? onConfirm() : null">
-            {{ data.confirmText || 'OK' }}
-        </button>
-    </mat-dialog-actions>
+  <h2 mat-dialog-title [class.error-title]="data.type === 'error'">
+    {{ data.title }}
+  </h2>
+  <mat-dialog-content>
+    <p [class.error-message]="data.type === 'error'">{{ data.message }}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    @if (data.type === 'confirm') {
+      <button
+        mat-raised-button
+        (click)="onCancel()">
+        {{ data.cancelText || 'Cancel' }}
+      </button>
+    }
+    <button
+      mat-raised-button
+      [class.error-button]="data.type === 'error'"
+      [mat-dialog-close]="data.type === 'alert' ? { confirmed: true } : null"
+      (click)="data.type === 'confirm' ? onConfirm() : null">
+      {{ data.confirmText || 'OK' }}
+    </button>
+  </mat-dialog-actions>
 </div>
